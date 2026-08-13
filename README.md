@@ -55,19 +55,19 @@ The toolbox takes multivariate process data, infers a **directed, time-lagged ca
 
 | Data & Scenario | Pre-processing |
 | --- | --- |
-| [![Data](assets/screen_data.JPG)](assets/screen_data.JPG) | [![Pre-processing](assets/screen_preprocessing.JPG)](assets/screen_preprocessing.JPG) |
+| [![Data and Scenario](assets/1-1.JPG)](assets/1-1.JPG) | [![Pre-processing](assets/2-1.JPG)](assets/2-1.JPG) |
 
 | Causal Discovery | Structural Monitoring |
 | --- | --- |
-| [![Discovery](assets/screen_discovery.JPG)](assets/screen_discovery.JPG) | [![Monitoring](assets/screen_monitoring.JPG)](assets/screen_monitoring.JPG) |
+| [![Causal Discovery](assets/3-2.JPG)](assets/3-2.JPG) | [![Monitoring](assets/4-1.JPG)](assets/4-1.JPG) |
 
 | Root-Cause Ranking | Evaluation & Report |
 | --- | --- |
-| [![Root cause](assets/screen_rootcause.JPG)](assets/screen_rootcause.JPG) | [![Report](assets/screen_report.JPG)](assets/screen_report.JPG) |
+| [![Root-Cause](assets/5-1.JPG)](assets/5-1.JPG) | [![Report](assets/6-1.JPG)](assets/6-1.JPG) |
 
 | AI Assistant |
 | --- |
-| [![AI Assistant](assets/screen_ai_assistant.JPG)](assets/screen_ai_assistant.JPG) |
+| [![AI Assistant](assets/ai-assistant.JPG)](assets/ai-assistant.JPG) |
 
 ---
 
