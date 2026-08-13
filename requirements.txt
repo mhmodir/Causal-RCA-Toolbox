@@ -1,0 +1,27 @@
+# =============================================================================
+#  Causal RCA Toolbox — runtime requirements
+#  The CPU-only PyTorch index MUST be the first line: without it, pip pulls the
+#  ~2 GB CUDA build instead of the ~200 MB CPU wheel.
+# =============================================================================
+--extra-index-url https://download.pytorch.org/whl/cpu
+
+# --- core --------------------------------------------------------------------
+dash[diskcache]
+dash-cytoscape
+plotly
+pandas
+numpy
+scipy
+statsmodels
+scikit-learn
+networkx
+requests
+reportlab
+gunicorn
+
+# --- deep-learning tier (5 methods) ------------------------------------------
+torch
+
+# --- advanced classic / traditional tier (2 methods) -------------------------
+tigramite
+lingam
