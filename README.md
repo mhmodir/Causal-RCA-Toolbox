@@ -139,25 +139,38 @@ Constraints apply to **every** method, are stored with the resulting graph, are 
 
 **Machine learning, traditional**
 
-Random-Forest Granger · Gradient-Boosting Granger · SVR Granger · Lasso-Granger (sparse) · Lagged mutual information · VarLiNGAM *(requires `lingam`)*
-
 The Granger-style variants replace the linear model with a non-linear learner and measure each source's grouped permutation importance on held-out data, so they detect curved relationships that linear tests miss.
+
+| Method | Principle |
+| --- | --- |
+| Random-Forest Granger | Fits a random forest per target, then permutes each source's lag block and measures the drop in held-out accuracy. Robust to noise and needs little tuning. |
+| Gradient-Boosting Granger | The same permutation test with gradient-boosted trees. Sharper on interactions and sharp non-linearities, at the cost of more sensitivity to hyperparameters. |
+| SVR Granger | Support-vector regression with an RBF kernel as the predictor. Suits smooth curved couplings and short records where trees tend to overfit. |
+| Lasso-Granger | L1-penalised VAR that drives irrelevant lag coefficients to exactly zero, so the graph comes out sparse by construction. Good first pass on wide datasets with many sensors. |
+| Lagged mutual information | Information-theoretic dependence between one pair at a time, maximised over the lag range. Captures any form of non-linear coupling but, being bivariate, reports indirect links too. |
+| VarLiNGAM | Linear non-Gaussian structural model solved by ICA. Uses non-Gaussianity to fix edge direction, including instantaneous effects that Granger tests cannot orient *(requires `lingam`)*. |
 
 **Machine learning, deep learning** *(requires PyTorch)*
 
-Neural Granger cMLP · Neural Granger cLSTM · Neural Granger cGRU · Convolutional TCN Granger · Temporal attention (TCDF)
+Each method trains a small network per target variable with a sparsity penalty applied to whole input groups; the input groups that survive the penalty are that target's causal parents. All five need long records and are considerably slower than the other families.
 
-Each trains a small network per target variable with a sparsity penalty on the input weights; the surviving input groups are the causal parents.
+| Method | Principle |
+| --- | --- |
+| Neural Granger cMLP | One multilayer perceptron per target with a group-lasso penalty on the input weights, following Tank et al. The general-purpose starting point for this family. |
+| Neural Granger cLSTM | Swaps the MLP for an LSTM, so dependence that persists well beyond the chosen maximum lag is still captured. Best where the process has long memory. |
+| Neural Granger cGRU | The same idea with gated recurrent units. Fewer parameters than the LSTM, so it trains faster and is steadier on shorter records. |
+| Convolutional TCN Granger | A dilated temporal convolutional network reads a wide history in parallel rather than sequentially. Fast for its depth and effective on oscillatory signals. |
+| Temporal attention (TCDF) | A convolutional network with learned per-source attention weights, TCDF-inspired. The attention scores double as an interpretable per-link importance and an estimate of the dominant lag. |
 
 **Probabilistic**
 
-Here each edge weight *is a probability* rather than a yes/no decision, and every link reports mean strength plus or minus one standard deviation:
+Here each edge weight *is a probability* rather than a yes/no decision, and every link reports mean strength plus or minus one standard deviation. Links with wide uncertainty bands are drawn dashed and dimmed on the graph.
 
-- **Bootstrap edge probability**, which re-runs discovery on block-resampled copies; the weight is the fraction of resamples containing the link
-- **Stability selection (Lasso)**, the selection frequency across random sub-samples
-- **Bayesian regression posterior**, a probability derived from the model's own coefficient uncertainty
-
-Links with wide uncertainty bands are drawn dashed and dimmed on the graph.
+| Method | Principle |
+| --- | --- |
+| Bootstrap edge probability | Re-runs discovery on many block-resampled copies of the record. The edge weight is the fraction of resamples in which the link appears, so it reflects how much the conclusion depends on the particular data window. |
+| Stability selection (Lasso) | Refits the sparse model on random sub-samples and records how often each link is selected. Links chosen consistently across sub-samples survive; borderline ones are exposed as borderline. |
+| Bayesian regression posterior | Derives each probability from the model's own coefficient uncertainty rather than from resampling. The cheapest of the three, and the only one giving a full posterior on link strength. |
 
 **Choosing between families**
 
